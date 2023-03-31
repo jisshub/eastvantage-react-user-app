@@ -28,6 +28,7 @@ npm install
 npm run dev
 ```
 
-App is deployed on Netlify Check Below Link:
-![User App](https://relaxed-donut-5edcbf.netlify.app/)
+App is deployed on Netlify, Check Below Link:
+
+https://relaxed-donut-5edcbf.netlify.app/
 

@@ -1,33 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+// material UI
+import { Card } from '@mui/material'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
+// axios
+import axios from 'axios';
+
+const App: React.FC =()=> {
+  const [userInfo, setUserInfo] = useState<Object[]>([])
+
+  async function fetchUserInfo(){
+    axios.get('https://randomuser.me/api')
+      .then(res => setUserInfo(res.data.results))
+  } 
+
+  function refreshUser() {
+    fetchUserInfo()
+  }
+
+  useEffect(() => {
+    fetchUserInfo()
+  }, [])
+  
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className="App">    
+    {userInfo.map((user: any) => (
+      <Card sx={{ minWidth: 345 }} key={user.login?.uuid}>
+        <CardContent>
+          <Typography variant="h4" component="div">
+            {user.name?.first} {user.name?.last}
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            {user.email}
+          </Typography>
+        </CardContent>
+        <CardActions className='card-action'>
+          <Button 
+            variant="text" 
+            className="btn"
+            onClick={refreshUser}
+            >
+              Refresh
+          </Button>
+        </CardActions>
+      </Card>
+    ))}
     </div>
   )
 }
